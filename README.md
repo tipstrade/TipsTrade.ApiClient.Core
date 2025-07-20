@@ -1,0 +1,1 @@
+# TipsTrade.ApiClient.Core
