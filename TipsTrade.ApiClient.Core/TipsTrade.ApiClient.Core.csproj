@@ -5,6 +5,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<LangVersion>latest</LangVersion>
 		<Nullable>enable</Nullable>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<Authors>John Bayly</Authors>
 		<Company>TipsTrade Ltd.</Company>
 		<Copyright>Copyright TipsTrade Ltd.2025</Copyright>

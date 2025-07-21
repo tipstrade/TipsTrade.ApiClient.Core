@@ -2,42 +2,59 @@
 
 namespace Tests.Credential {
   public class Tests {
-    [Test]
-    public void CredentialResponseCasts() {
-      var ex = new InvalidOperationException("The value isn't valid.");
-      var message = "Not found.";
+    [Test(Description = "CredentialResponse casts from exception.")]
+    public void CredentialResponse_Casts_From_Exception() {
+      var expected = new InvalidOperationException("The value isn't valid.");
 
-      CredentialResponse<UserCredential> fromError = ex;
-      Assert.That(fromError, Is.Not.Null);
-      Assert.That(fromError.Message, Is.Null);
-      Assert.That(fromError.Value, Is.Null);
-      Assert.That(fromError.Exception, Is.EqualTo(ex));
-      Assert.That(fromError.IsSuccess, Is.False);
+      CredentialResponse<UserCredential> fromError = expected;
 
-      CredentialResponse<UserCredential> fromMessage = message;
-      Assert.That(fromMessage, Is.Not.Null);
-      Assert.That(fromMessage.Message, Is.EqualTo(message));
-      Assert.That(fromMessage.Value, Is.Null);
-      Assert.That(fromMessage.Exception, Is.Null);
-      Assert.That(fromMessage.IsSuccess, Is.False);
-
-      CredentialResponse<UserCredential> fromUser = new UserCredential("bob", "password");
-      Assert.That(fromUser, Is.Not.Null);
-      Assert.That(fromUser.Message, Is.Null);
-      Assert.That(fromUser.Value, Is.Not.Null);
-      Assert.That(fromUser.Value.Username, Is.EqualTo("bob"));
-      Assert.That(fromUser.Value.Password, Is.EqualTo("password"));
-      Assert.That(fromUser.Exception, Is.Null);
-      Assert.That(fromUser.IsSuccess, Is.True);
+      Assert.Multiple(() => {
+        Assert.That(fromError, Is.Not.Null);
+        Assert.That(fromError.Message, Is.Null);
+        Assert.That(fromError.Value, Is.Null);
+        Assert.That(fromError.Exception, Is.EqualTo(expected));
+        Assert.That(fromError.IsSuccess, Is.False);
+      });
     }
 
-    [Test]
+    [Test(Description = "CredentialResponse casts from string.")]
+    public void CredentialResponse_Casts_From_String() {
+      var expected = "Not found.";
+
+      CredentialResponse<UserCredential> fromMessage = expected;
+
+      Assert.Multiple(() => {
+        Assert.That(fromMessage, Is.Not.Null);
+        Assert.That(fromMessage.Message, Is.EqualTo(expected));
+        Assert.That(fromMessage.Value, Is.Null);
+        Assert.That(fromMessage.Exception, Is.Null);
+        Assert.That(fromMessage.IsSuccess, Is.False);
+      });
+    }
+
+    [Test(Description = "CredentialResponse casts from string.")]
+    public void CredentialResponse_Casts_From_Value() {
+      var expected = new UserCredential("bob", "password");
+      CredentialResponse<UserCredential> fromUser = expected;
+
+      Assert.Multiple(() => {
+        Assert.That(fromUser, Is.Not.Null);
+        Assert.That(fromUser.Message, Is.Null);
+        Assert.That(fromUser.Value, Is.EqualTo(expected));
+        Assert.That(fromUser.Value?.Username, Is.EqualTo("bob"));
+        Assert.That(fromUser.Value?.Password, Is.EqualTo("password"));
+        Assert.That(fromUser.Exception, Is.Null);
+        Assert.That(fromUser.IsSuccess, Is.True);
+      });
+    }
+
+    [Test(Description = "GetCredential succeeds.")]
     public async Task GetCredential() {
       var mock = Mocks.GetUserCredentialMock();
 
       var mot = await mock.Object.TryGetCredentialAsync("mot");
-      Assert.That(mot, Is.Not.Null);
       Assert.Multiple(() => {
+        Assert.That(mot, Is.Not.Null);
         Assert.That(mot.IsSuccess, Is.True);
         Assert.That(mot.Value?.Username, Is.EqualTo("mot-user"));
         Assert.That(mot.Value?.Password, Is.EqualTo("password"));
@@ -46,8 +63,8 @@ namespace Tests.Credential {
       });
 
       var enquiry = await mock.Object.TryGetCredentialAsync("enquiry");
-      Assert.That(enquiry, Is.Not.Null);
       Assert.Multiple(() => {
+        Assert.That(enquiry, Is.Not.Null);
         Assert.That(enquiry.IsSuccess, Is.True);
         Assert.That(enquiry.Value?.Username, Is.EqualTo("enquiry-user"));
         Assert.That(enquiry.Value?.Password, Is.EqualTo("123456"));
@@ -56,8 +73,8 @@ namespace Tests.Credential {
       });
 
       var recall = await mock.Object.TryGetCredentialAsync("recall");
-      Assert.That(recall, Is.Not.Null);
       Assert.Multiple(() => {
+        Assert.That(recall, Is.Not.Null);
         Assert.That(recall.IsSuccess, Is.False);
         Assert.That(recall.Value, Is.Null);
         Assert.That(recall.Message, Is.EqualTo("Not found."));
@@ -65,8 +82,8 @@ namespace Tests.Credential {
       });
 
       var unsupported = await mock.Object.TryGetCredentialAsync("unsupported");
-      Assert.That(unsupported, Is.Not.Null);
       Assert.Multiple(() => {
+        Assert.That(unsupported, Is.Not.Null);
         Assert.That(unsupported.IsSuccess, Is.False);
         Assert.That(unsupported.Value, Is.Null);
         Assert.That(unsupported.Message, Is.Null);
@@ -74,13 +91,14 @@ namespace Tests.Credential {
       });
     }
 
-    [Test]
+    [Test(Description = "GetGenericCredential succeeds.")]
     public async Task GetGenericCredential() {
       var mock = Mocks.GetGenericMock();
 
       var alce = await mock.Object.TryGetCredentialAsync<(string, string), UserCredential>(("alice", "Provider1"));
-      Assert.That(alce, Is.Not.Null);
+
       Assert.Multiple(() => {
+        Assert.That(alce, Is.Not.Null);
         Assert.That(alce.IsSuccess, Is.True);
         Assert.That(alce.Value?.Username, Is.EqualTo("alice"));
         Assert.That(alce.Value?.Password, Is.EqualTo("123456"));
@@ -89,8 +107,8 @@ namespace Tests.Credential {
       });
 
       var bob = await mock.Object.TryGetCredentialAsync<(string, string), ApiKeyCredential>(("bob", "Provider2"));
-      Assert.That(bob, Is.Not.Null);
       Assert.Multiple(() => {
+        Assert.That(bob, Is.Not.Null);
         Assert.That(bob.IsSuccess, Is.True);
         Assert.That(bob.Value?.ApiKey, Is.EqualTo("abcdef"));
         Assert.That(bob.Message, Is.Null);
@@ -98,8 +116,8 @@ namespace Tests.Credential {
       });
 
       var eve = await mock.Object.TryGetCredentialAsync<(string, string), ApiKeyCredential>(("eve", "Provider3"));
-      Assert.That(eve, Is.Not.Null);
       Assert.Multiple(() => {
+        Assert.That(eve, Is.Not.Null);
         Assert.That(eve.IsSuccess, Is.False);
         Assert.That(eve.Value, Is.Null);
         Assert.That(eve.Message, Is.EqualTo("Eve has been banned."));
@@ -107,8 +125,8 @@ namespace Tests.Credential {
       });
 
       var unsupported = await mock.Object.TryGetCredentialAsync<(string, string), DummyCredential>(("freddie", "Provider3"));
-      Assert.That(unsupported, Is.Not.Null);
       Assert.Multiple(() => {
+        Assert.That(unsupported, Is.Not.Null);
         Assert.That(unsupported.IsSuccess, Is.False);
         Assert.That(unsupported.Value, Is.Null);
         Assert.That(unsupported.Message, Is.Null);
@@ -117,16 +135,16 @@ namespace Tests.Credential {
     }
 
     [TestCaseSource(nameof(IsValidFalseCases))]
-    public void IIsValidFalse(IIsValid value) {
+    public void IIsValid_False(IIsValid value) {
       Assert.That(value.IsValid, Is.False);
     }
 
     [TestCaseSource(nameof(IsValidTrueCases))]
-    public void IIsValidTrue(IIsValid value) {
+    public void IIsValid_True(IIsValid value) {
       Assert.That(value.IsValid, Is.True);
     }
 
-    [Test]
+    [Test(Description = "SetCredentialAsync succeeds.")]
     public async Task SetCredential() {
       var mock = Mocks.SetCredentialMock();
       var key = $"{Guid.NewGuid()}";
@@ -141,28 +159,46 @@ namespace Tests.Credential {
       mock.Verify(x => x.SetCredentialAsync(key, credential, default));
     }
 
-    internal static IEnumerable<IIsValid> IsValidFalseCases() {
-      yield return new ApiKeyCredential();
-      yield return new ApiKeyCredential("", "secret");
-      yield return new ApiKeyCredential(null!, "secret");
-      yield return new UserCredential();
-      yield return new UserCredential("", "password");
-      yield return new UserCredential(null!, "password");
-      yield return new UserCredential("bob", "");
-      yield return new UserCredential("bob", null!);
+    #region Test cases
+    internal static IEnumerable<TestCaseData> IsValidFalseCases() {
+      yield return new TestCaseData(new ApiKeyCredential())
+        .SetName("Is invalid with default API key");
+      yield return new TestCaseData(new ApiKeyCredential("", "secret"))
+        .SetName("Is invalid with empty API key");
+      yield return new TestCaseData(new ApiKeyCredential(null!, "secret"))
+        .SetName("Is invalid with null API key");
+      yield return new TestCaseData(new UserCredential())
+        .SetName("Is invalid with default User");
+      yield return new TestCaseData(new UserCredential("", "password"))
+        .SetName("Is invalid with empty username");
+      yield return new TestCaseData(new UserCredential(null!, "password"))
+        .SetName("Is invalid with null username");
+      yield return new TestCaseData(new UserCredential("bob", ""))
+        .SetName("Is invalid with empty password");
+      yield return new TestCaseData(new UserCredential("bob", null!))
+        .SetName("Is invalid with null password");
       // Overriden IsValid
-      yield return new DummyCredential { Username = "", Password = "password", CompanyId = "a-1234" };
-      yield return new DummyCredential { Username = "alice", Password = "", CompanyId = "a-1234" };
-      yield return new DummyCredential { Username = "alice", Password = "password", CompanyId = "" };
+      yield return new TestCaseData(new DummyCredential { Username = "", Password = "password", CompanyId = "a-1234" })
+        .SetName("Is invalid with empty username with company");
+      yield return new TestCaseData(new DummyCredential { Username = "alice", Password = "", CompanyId = "a-1234" })
+        .SetName("Is invalid with empty password with company");
+      yield return new TestCaseData(new DummyCredential { Username = "alice", Password = "password", CompanyId = "" })
+        .SetName("Is invalid with empty company");
     }
 
-    internal static IEnumerable<IIsValid> IsValidTrueCases() {
-      yield return new ApiKeyCredential("abcdef", "");
-      yield return new ApiKeyCredential("abcdef", null!);
-      yield return new ApiKeyCredential("abcdef", "secret");
-      yield return new UserCredential("bob", "password");
+    internal static IEnumerable<TestCaseData> IsValidTrueCases() {
+      yield return new TestCaseData(new ApiKeyCredential("abcdef", ""))
+        .SetName("Is valid with empty API secret");
+      yield return new TestCaseData(new ApiKeyCredential("abcdef", null!))
+        .SetName("Is valid with null API secret");
+      yield return new TestCaseData(new ApiKeyCredential("abcdef", "secret"))
+        .SetName("Is valid with non-empty secret");
+      yield return new TestCaseData(new UserCredential("bob", "password"))
+        .SetName("Is valid with username and password");
       // Overriden IsValid
-      yield return new DummyCredential { Username = "alice", Password = "password", CompanyId = "a-1234" };
+      yield return new TestCaseData(new DummyCredential { Username = "alice", Password = "password", CompanyId = "a-1234" })
+        .SetName("Is valid with with username, password and company");
     }
+    #endregion
   }
 }

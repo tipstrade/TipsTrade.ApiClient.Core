@@ -22,7 +22,7 @@ namespace TipsTrade.ApiClient.Core.Threading {
     public int DefaultMaxCount { get; }
     #endregion
 
-    #region "Lifecycle
+    #region Lifecycle
     /// <summary>Creates an instance of the <see cref="KeyedSemaphoreSlim{K}"/> class.</summary>
     /// <param name="defaultInitialCount">The default initial number of requests for the semaphore that can be granted concurrently.</param>
     /// <param name="defaultMaxCount">The default maximum number of requests for the semaphore that can be granted concurrently.</param>
@@ -39,7 +39,7 @@ namespace TipsTrade.ApiClient.Core.Threading {
     /// <summary>Gets the current count.</summary>
     /// <param name="key">The key for the semaphore.</param>
     /// <returns>The current count.</returns>
-    /// <exception cref="InvalidOperationException">if the key doesn't exist.</exception>
+    /// <exception cref="InvalidOperationException">If the key doesn't exist.</exception>
     public int GetCurrentCount(K key) {
       if (semaphores.TryGetValue(key, out var semaphore)) {
         return semaphore.CurrentCount;
@@ -53,7 +53,7 @@ namespace TipsTrade.ApiClient.Core.Threading {
     /// The store is backed by a dictionary, so when using reference types be sure to pass the same object reference.
     /// </remarks>
     /// <param name="key">The key for the semaphore.</param>
-    /// <exception cref="InvalidOperationException">if the key doesn't exist.</exception>
+    /// <exception cref="InvalidOperationException">If the key doesn't exist.</exception>
     public void Release(K key) {
       if (!TryRelease(key)) {
         throw new InvalidOperationException($"Couldn't find a semaphore for {key}");
