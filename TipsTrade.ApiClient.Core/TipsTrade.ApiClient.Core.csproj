@@ -12,11 +12,28 @@
 		<PackageProjectUrl>https://github.com/tipstrade/TipsTrade.ApiClient.Core</PackageProjectUrl>
 		<RepositoryType>git</RepositoryType>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-		<Version>1.0.0</Version>
+		<Version>1.0.0.0</Version>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<Description>A collection of interfaces, classes and extension methods that are commonly used when writing API client libraries.</Description>
+		<Title>API Client abstractions and helpers.</Title>
 	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Include="..\README.md">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	</ItemGroup>
 
 	<ItemGroup>
 	  <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.7" />
 	</ItemGroup>
+
+	<Target Name="CopyNuGetPackageToRoot" AfterTargets="Pack" Condition="'$(Configuration)' == 'Release'">
+		<ItemGroup>
+			<NuPkgFiles Include="$(OutputPath)\*.nupkg" />
+		</ItemGroup>
+		<Copy SourceFiles="@(NuPkgFiles)" DestinationFolder="$(SolutionDir)" />
+	</Target>
 
 </Project>
