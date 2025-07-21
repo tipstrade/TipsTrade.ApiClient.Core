@@ -5,30 +5,18 @@
     /// <typeparam name="T">The type of tenant.</typeparam>
     /// <param name="tenant">The current value.</param>
     /// <param name="defaultValue">The default tenant, if the provider is null.</param>
-    /// <returns></returns>
-    [Obsolete]
-    public static Task<T> GetTenantOrDefault<T>(this IGetTenant<T>? tenant, T defaultValue) => tenant.GetTenantOrDefaultAsync(defaultValue);
-
-    /// <summary>Gets the tenant, or the default string.</summary>
-    /// <param name="tenant">The current value.</param>
-    /// <returns>The tenant string, or <c>(default)</c></returns>
-    [Obsolete]
-    public static Task<string> GetTenantOrDefault(this IGetTenant? tenant) => tenant.GetTenantOrDefaultAsync();
-
-    /// <summary>Retrieves the tenant, or the default value.</summary>
-    /// <typeparam name="T">The type of tenant.</typeparam>
-    /// <param name="tenant">The current value.</param>
-    /// <param name="defaultValue">The default tenant, if the provider is null.</param>
-    /// <returns></returns>
-    public static async Task<T> GetTenantOrDefaultAsync<T>(this IGetTenant<T>? tenant, T defaultValue) {
-      return tenant != null ? await tenant.GetTenantAsync() : defaultValue;
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>The tenant value, or the value in <c><paramref name="defaultValue"/></c>.</returns>
+    public static async Task<T> GetTenantOrDefaultAsync<T>(this IGetTenant<T>? tenant, T defaultValue, CancellationToken cancellationToken = default) {
+      return tenant != null ? await tenant.GetTenantAsync(cancellationToken) : defaultValue;
     }
 
-    /// <summary>Gets the tenant, or the default string.</summary>
+    /// <summary>Gets the tenant string, or the default string.</summary>
     /// <param name="tenant">The current value.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The tenant string, or <c>(default)</c></returns>
-    public static Task<string> GetTenantOrDefaultAsync(this IGetTenant? tenant) {
-      return tenant.GetTenantOrDefaultAsync("(default)");
+    public static Task<string> GetTenantOrDefaultAsync(this IGetTenant? tenant, CancellationToken cancellationToken = default) {
+      return tenant.GetTenantOrDefaultAsync("(default)", cancellationToken);
     }
   }
 }

@@ -3,78 +3,69 @@ using TipsTrade.ApiClient.Core.Tenant;
 
 namespace Tests.Tenant {
   public class Tests {
-    private static Mock<IGetTenant<T>> SetupTenantMock<T>(T tenantValue) {
+    private static Mock<IGetTenant<T>> GetFailureMock<T, TException>() where TException : Exception, new() {
       var mock = new Mock<IGetTenant<T>>();
 
-      mock.Setup(x => x.GetTenantAsync()).ReturnsAsync(tenantValue);
+      mock.Setup(x => x.GetTenantAsync(It.IsAny<CancellationToken>()))
+        .Throws<TException>();
+
+      return mock;
+    }
+
+    private static Mock<IGetTenant<T>> GetSuccessMock<T>(T tenantValue) {
+      var mock = new Mock<IGetTenant<T>>();
+
+      mock.Setup(x => x.GetTenantAsync(It.IsAny<CancellationToken>()))
+        .ReturnsAsync(tenantValue);
 
       return mock;
     }
 
     [Test(Description = "GetTenantOrDefault<int> succeeds with a null reference")]
     public async Task GetIntTenantOrDefault_Succeeds_For_Null() {
-      IGetTenant<int>? nullMock = null;
+      IGetTenant<int>? mock = null;
       var expected = -1;
 
-      var actual = await nullMock.GetTenantOrDefaultAsync(expected);
+      var actual = await mock.GetTenantOrDefaultAsync(expected);
 
       Assert.That(actual, Is.EqualTo(expected));
     }
 
     [Test(Description = "GetTenantOrDefault<string> succeeds with a null reference")]
     public async Task GetStringTenantOrDefault_Succeeds_For_Null() {
-      IGetTenant? nullMock = null;
       var expected = "(default)";
       string actual;
+      IGetTenant? mock = null;
 
       // With no default
-      actual = await nullMock.GetTenantOrDefaultAsync();
+      actual = await mock.GetTenantOrDefaultAsync();
 
       Assert.That(actual, Is.EqualTo(expected));
 
       // With a default value
       expected = "None";
-      actual = await nullMock.GetTenantOrDefaultAsync("None");
+      actual = await mock.GetTenantOrDefaultAsync("None");
 
       Assert.That(actual, Is.EqualTo(expected));
     }
 
-    [Test(Description = "IGetTenant succeeds")]
-    public async Task Get_Succeeds() {
+    [Test(Description = "GetTenantOrDefaultAsync succeeds")]
+    public async Task GetTenantOrDefaultAsync_Succeeds() {
       var expected = "Bob";
-      string actual;
+      var mock = GetSuccessMock(expected);
 
-      var mock = new Mock<IGetTenant>();
-      mock.Setup(x => x.GetTenantAsync()).ReturnsAsync(expected);
-
-      actual = await mock.Object.GetTenantOrDefaultAsync();
+      var actual = await mock.Object.GetTenantOrDefaultAsync("(default)");
 
       Assert.That(actual, Is.EqualTo(expected));
-      mock.Verify(x => x.GetTenantAsync());
+      mock.Verify(x => x.GetTenantAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
 
-    [Test(Description = "IGetTenant<int> succeeds")]
-    public async Task Get_Int_Succeeds() {
-      var expected = 100;
-      int actual;
+    [Test(Description = "GetTenantOrDefaultAsync throws")]
+    public void GetTenantOrDefaultAsync_Throws() {
+      var mock = GetFailureMock<string, InvalidOperationException>();
 
-      var mock = SetupTenantMock(expected);
-      actual = await mock.Object.GetTenantOrDefaultAsync(-1);
-
-      Assert.That(actual, Is.EqualTo(expected));
-      mock.Verify(x => x.GetTenantAsync());
-    }
-
-    [Test(Description = "IGetTenant<Tuple> succeeds")]
-    public async Task Get_Tuple_Succeeds() {
-      var expected = (Name: "bob", Service: "MOT");
-      dynamic actual;
-
-      var mock = SetupTenantMock(expected);
-      actual = await mock.Object.GetTenantOrDefaultAsync((Name: "(default)", Service: "Any"));
-
-      Assert.That(actual, Is.EqualTo(expected));
-      mock.Verify(x => x.GetTenantAsync());
+      Assert.ThrowsAsync<InvalidOperationException>(() => mock.Object.GetTenantOrDefaultAsync("(default)"));
+      mock.Verify(x => x.GetTenantAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
   }
 }

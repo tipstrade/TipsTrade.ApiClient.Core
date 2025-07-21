@@ -2,15 +2,13 @@
 
 namespace Tests.Threading {
   public class Tests {
-    [Test(Description = "GetCurrentCount throw for invalid key.")]
+    [Test(Description = "GetCurrentCount throws for invalid key.")]
     public async Task GetCurrentCount_Throws_For_Invalid_Key() {
       var semaphore = new KeyedSemaphoreSlim<MyClassKey>(1);
 
-      var getKey = () => new MyClassKey { Tenant = "bob", Provider = "MOT" };
+      await semaphore.WaitAsync(new());
 
-      await semaphore.WaitAsync(getKey());
-
-      Assert.Throws<InvalidOperationException>(() => semaphore.GetCurrentCount(getKey()));
+      Assert.Throws<InvalidOperationException>(() => semaphore.GetCurrentCount(new()));
     }
 
     [TestCaseSource(nameof(SemaphoreKeys))]
@@ -39,11 +37,9 @@ namespace Tests.Threading {
     public async Task WaitAsync_Throws_For_Invalid_Key() {
       var semaphore = new KeyedSemaphoreSlim<MyClassKey>(1);
 
-      var getKey = () => new MyClassKey { Tenant = "bob", Provider = "MOT" };
+      await semaphore.WaitAsync(new());
 
-      await semaphore.WaitAsync(getKey());
-
-      Assert.Throws<InvalidOperationException>(() => semaphore.Release(getKey()));
+      Assert.Throws<InvalidOperationException>(() => semaphore.Release(new()));
     }
 
     #region Test cases

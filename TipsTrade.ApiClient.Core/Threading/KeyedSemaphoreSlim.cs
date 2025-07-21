@@ -75,18 +75,22 @@ namespace TipsTrade.ApiClient.Core.Threading {
 
     /// <summary>Asynchronously waits to enter the <see cref="SemaphoreSlim"/>.</summary>
     /// <param name="key">The key for the semaphore.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task that will complete when the semaphore has been entered.</returns>
-    public Task WaitAsync(K key) => WaitAsync(key, DefaultInitialCount, DefaultMaxCount);
+    public Task WaitAsync(K key, CancellationToken cancellationToken = default) {
+      return WaitAsync(key, DefaultInitialCount, DefaultMaxCount, cancellationToken);
+    }
 
     /// <summary>Asynchronously waits to enter the <see cref="SemaphoreSlim"/>.</summary>
     /// <param name="key">The key for the semaphore.</param>
     /// <param name="initialCount">The initial number of requests for the semaphore that can be granted concurrently.</param>
     /// <param name="maxCount">The maximum number of requests for the semaphore that can be granted concurrently.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task that will complete when the semaphore has been entered.</returns>
-    public async Task WaitAsync(K key, int initialCount, int maxCount = int.MaxValue) {
+    public async Task WaitAsync(K key, int initialCount, int maxCount = int.MaxValue, CancellationToken cancellationToken = default) {
       var semaphore = semaphores.GetOrAdd(key, _ => new SemaphoreSlim(initialCount, maxCount));
 
-      await semaphore.WaitAsync().ConfigureAwait(false);
+      await semaphore.WaitAsync(cancellationToken).ConfigureAwait(false);
     }
     #endregion
   }

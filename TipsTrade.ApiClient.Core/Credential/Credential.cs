@@ -46,5 +46,4 @@
       Secret = secret;
     }
   }
-
 }

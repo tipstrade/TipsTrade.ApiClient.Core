@@ -3,7 +3,7 @@ using Moq;
 
 namespace Tests.Logging {
   public class Tests {
-    private Mock<ILogger> CreateLogger(LogLevel level) {
+    private static Mock<ILogger> CreateLogger(LogLevel level) {
       var mock = new Mock<ILogger>();
 
       mock.Setup(x => x.IsEnabled(LogLevel.Trace)).Returns(level <= LogLevel.Trace);

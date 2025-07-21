@@ -46,13 +46,12 @@ namespace Tests.Errors {
       var expectedException = new InvalidOperationException();
       var ex = ApiException.FromHttpError(expectedStatus, message: expectedMessage, error: expectedError, innerException: expectedException);
 
-      var error = ex.GetError<(Guid RequestId, string Endpoint)>();
-
       Assert.Multiple(() => {
         Assert.That(ex.Error, Is.EqualTo(expectedError));
         Assert.That(ex.Message, Is.EqualTo(expectedMessage));
         Assert.That(ex.InnerException, Is.EqualTo(expectedException));
         Assert.That(ex.StatusCode, Is.EqualTo(expectedStatus));
+        Assert.That(ex.GetError<(Guid, string)>, Is.EqualTo(expectedError));
       });
     }
 
