@@ -16,7 +16,7 @@ namespace Tests.Tenant {
       IGetTenant<int>? nullMock = null;
       var expected = -1;
 
-      var actual = await nullMock.GetTenantOrDefault(expected);
+      var actual = await nullMock.GetTenantOrDefaultAsync(expected);
 
       Assert.That(actual, Is.EqualTo(expected));
     }
@@ -28,13 +28,13 @@ namespace Tests.Tenant {
       string actual;
 
       // With no default
-      actual = await nullMock.GetTenantOrDefault();
+      actual = await nullMock.GetTenantOrDefaultAsync();
 
       Assert.That(actual, Is.EqualTo(expected));
 
       // With a default value
       expected = "None";
-      actual = await nullMock.GetTenantOrDefault("None");
+      actual = await nullMock.GetTenantOrDefaultAsync("None");
 
       Assert.That(actual, Is.EqualTo(expected));
     }
@@ -47,7 +47,7 @@ namespace Tests.Tenant {
       var mock = new Mock<IGetTenant>();
       mock.Setup(x => x.GetTenantAsync()).ReturnsAsync(expected);
 
-      actual = await mock.Object.GetTenantOrDefault();
+      actual = await mock.Object.GetTenantOrDefaultAsync();
 
       Assert.That(actual, Is.EqualTo(expected));
       mock.Verify(x => x.GetTenantAsync());
@@ -59,7 +59,7 @@ namespace Tests.Tenant {
       int actual;
 
       var mock = SetupTenantMock(expected);
-      actual = await mock.Object.GetTenantOrDefault(-1);
+      actual = await mock.Object.GetTenantOrDefaultAsync(-1);
 
       Assert.That(actual, Is.EqualTo(expected));
       mock.Verify(x => x.GetTenantAsync());
@@ -71,7 +71,7 @@ namespace Tests.Tenant {
       dynamic actual;
 
       var mock = SetupTenantMock(expected);
-      actual = await mock.Object.GetTenantOrDefault((Name: "(default)", Service: "Any"));
+      actual = await mock.Object.GetTenantOrDefaultAsync((Name: "(default)", Service: "Any"));
 
       Assert.That(actual, Is.EqualTo(expected));
       mock.Verify(x => x.GetTenantAsync());
