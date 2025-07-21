@@ -2,6 +2,7 @@
 using TipsTrade.ApiClient.Core.Logging;
 
 namespace TipsTrade.ApiClient.Core.Credential {
+  /// <summary>Provides extension methods for the <see cref="Credential"/> namespace.</summary>
   public static class Extensions {
     /// <summary>Attempts to get the specified credential.</summary>
     /// <typeparam name="TKey">The type of key used to identify the credential.</typeparam>

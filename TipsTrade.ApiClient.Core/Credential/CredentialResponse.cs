@@ -38,6 +38,7 @@
     /// <summary>Implicitly converts an error string to a <see cref="CredentialResponse{T}"/>.</summary>
     public static implicit operator CredentialResponse<T>(string message) => CredentialResponse<T>.Error(message);
 
+    /// <summary>Returns a string that represents the current object.</summary>
     public override string ToString() {
       return IsSuccess ?
         $"Success {Value}" :

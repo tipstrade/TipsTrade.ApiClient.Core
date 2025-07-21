@@ -5,6 +5,7 @@
     bool IsValid { get; }
   }
 
+  /// <summary>Represents a simple user credential.</summary>
   public class UserCredential : IIsValid {
     /// <summary>The username.</summary>
     public string Username { get; set; } = "";
@@ -25,8 +26,9 @@
     }
   }
 
+  /// <summary>Represents a simple API key credential.</summary>
   public class ApiKeyCredential : IIsValid {
-    /// <summary>The API Key</summary>
+    /// <summary>The API key</summary>
     public string ApiKey { get; set; } = "";
 
     /// <summary>The optional secret.</summary>

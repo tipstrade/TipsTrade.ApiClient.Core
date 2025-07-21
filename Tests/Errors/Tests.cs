@@ -4,7 +4,7 @@ using TipsTrade.ApiClient.Core.Error;
 namespace Tests.Errors {
   public class Tests {
     [Test(Description = "ApiException.FromHttpError generates a custom error message.")]
-    public void ApiExceptionFromStatusCode() {
+    public void ApiException_From_StatusCode() {
       var ex = ApiException.FromHttpError(HttpStatusCode.NotFound);
 
       using (Assert.EnterMultipleScope()) {
@@ -16,7 +16,7 @@ namespace Tests.Errors {
     }
 
     [Test(Description = "ApiException.FromHttpError uses the error.")]
-    public void ApiExceptionFromStatusCodeWithError() {
+    public void ApiException_From_StatusCode_With_Error() {
       var expected = (RequestId: Guid.NewGuid(), Endpoint: "users");
       var ex = ApiException.FromHttpError(HttpStatusCode.NotFound, error: expected);
 
@@ -31,7 +31,7 @@ namespace Tests.Errors {
     }
 
     [Test(Description = "ApiException.FromHttpError uses the provided message.")]
-    public void ApiExceptionFromStatusCodeWithMessage() {
+    public void ApiException_From_StatusCode_With_Message() {
       var expected = "A custom message.";
       var ex = ApiException.FromHttpError(HttpStatusCode.NotFound, expected);
 
@@ -39,7 +39,7 @@ namespace Tests.Errors {
     }
 
     [Test(Description = "ApiException.FromHttpError uses all the parameters.")]
-    public void ApiExceptionFromStatusCodeWithParameters() {
+    public void ApiException_From_StatusCode_With_Parameters() {
       var expectedMessage = "A custom message";
       var expectedStatus = HttpStatusCode.NotFound;
       var expectedError = (RequestId: Guid.NewGuid(), Endpoint: "users");
@@ -57,7 +57,7 @@ namespace Tests.Errors {
     }
 
     [Test(Description = "ApiException.FromHttpError uses the provided provider.")]
-    public void ApiExceptionFromStatusCodeWithProvider() {
+    public void ApiException_From_StatusCode_With_Provider() {
       var expected = "DVLA MOT";
       var ex = ApiException.FromHttpError(HttpStatusCode.NotFound, provider: expected);
 
@@ -65,7 +65,7 @@ namespace Tests.Errors {
     }
 
     [Test(Description = "HttpStatusCode.GetErrorMessage extension succeeds.")]
-    public void HttpStatusCodeGetErrorMessage() {
+    public void HttpStatusCode_GetErrorMessage() {
       var fallback = @"The server returned a \d+ response";
 
       Assert.Multiple(() => {

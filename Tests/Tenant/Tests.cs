@@ -11,8 +11,8 @@ namespace Tests.Tenant {
       return mock;
     }
 
-    [Test(Description = "Null GetTenantOrDefault<int> succeeds")]
-    public async Task NullGetIntTenantOrDefaultSucceeds() {
+    [Test(Description = "GetTenantOrDefault<int> succeeds with a null reference")]
+    public async Task GetIntTenantOrDefault_Succeeds_For_Null() {
       IGetTenant<int>? nullMock = null;
       var expected = -1;
 
@@ -21,8 +21,8 @@ namespace Tests.Tenant {
       Assert.That(actual, Is.EqualTo(expected));
     }
 
-    [Test(Description = "Null GetTenantOrDefault<string> succeeds")]
-    public async Task NullGetStringTenantOrDefaultSucceeds() {
+    [Test(Description = "GetTenantOrDefault<string> succeeds with a null reference")]
+    public async Task GetStringTenantOrDefault_Succeeds_For_Null() {
       IGetTenant? nullMock = null;
       var expected = "(default)";
       string actual;
@@ -40,7 +40,7 @@ namespace Tests.Tenant {
     }
 
     [Test(Description = "IGetTenant succeeds")]
-    public async Task GetSucceeds() {
+    public async Task Get_Succeeds() {
       var expected = "Bob";
       string actual;
 
@@ -54,7 +54,7 @@ namespace Tests.Tenant {
     }
 
     [Test(Description = "IGetTenant<int> succeeds")]
-    public async Task GetIntSucceeds() {
+    public async Task Get_Int_Succeeds() {
       var expected = 100;
       int actual;
 
@@ -66,7 +66,7 @@ namespace Tests.Tenant {
     }
 
     [Test(Description = "IGetTenant<Tuple> succeeds")]
-    public async Task GetTupleSucceeds() {
+    public async Task Get_Tuple_Succeeds() {
       var expected = (Name: "bob", Service: "MOT");
       dynamic actual;
 
