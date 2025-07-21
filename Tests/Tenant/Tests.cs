@@ -3,10 +3,10 @@ using TipsTrade.ApiClient.Core.Tenant;
 
 namespace Tests.Tenant {
   public class Tests {
-    private static Mock<IGetTenant<T>> SetupTenantMock<T>(T tennantValue) {
+    private static Mock<IGetTenant<T>> SetupTenantMock<T>(T tenantValue) {
       var mock = new Mock<IGetTenant<T>>();
 
-      mock.Setup(x => x.GetTenantAsync()).ReturnsAsync(tennantValue);
+      mock.Setup(x => x.GetTenantAsync()).ReturnsAsync(tenantValue);
 
       return mock;
     }
