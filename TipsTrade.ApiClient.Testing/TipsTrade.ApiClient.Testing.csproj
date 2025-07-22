@@ -13,7 +13,6 @@
 		<RepositoryType>git</RepositoryType>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Version>1.0.0</Version>
-		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<Description>A collection of interfaces, classes and extension methods that are commonly used when writing API client libraries.</Description>
 		<Title>API Client abstractions and helpers.</Title>
 		<PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
@@ -21,6 +20,7 @@
 
 	<PropertyGroup>
 		<NoWarn>IDE0290</NoWarn>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -28,16 +28,16 @@
 			<Pack>True</Pack>
 			<PackagePath>\</PackagePath>
 		</None>
-		<None Include="..\README.md">
+		<None Include="README.md">
 			<Pack>True</Pack>
 			<PackagePath>\</PackagePath>
 		</None>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-	  <PackageReference Include="NUnit" Version="4.3.2" />
-	  <PackageReference Include="System.Text.Json" Version="9.0.7" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="NUnit" Version="4.3.2" />
+		<PackageReference Include="System.Text.Json" Version="9.0.7" />
 	</ItemGroup>
 
 	<Target Name="CopyNuGetPackageToRoot" AfterTargets="Pack" Condition="'$(Configuration)' == 'Release'">
