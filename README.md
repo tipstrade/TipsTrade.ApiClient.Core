@@ -10,10 +10,9 @@ A collection of interfaces, classes and extension methods that are commonly used
 
 ### TipsTrade.ApiClient.Core.Credential
 - `IIsValid`, provides a property for indicating whether a instance is valid.
-- `CredentialResponse<T>`, provides properties for returning a credential.
-- `IGetCredential`, `IGetCredential<TKey, T>`, `IGetGenericCredential<TKey>`, provides methods for retrieving a credential using a key.
-- `ISetCredential<TKey, T>`, provides methods setting a credential using a key.
-- `TryGetCredentialAsync` extension method for safely retrieving a credential.
+- `UserCredential`, `ApiKeyCredential`, provides properties for commonly used credential types.
+- `IGetCredential<TKey>`, `IGetCredential<TKey, TCredential>`, provides methods for retrieving a credential using a key.
+- `ISetCredential<TKey, TCredential>`, provides methods setting a credential using a key.
 - `TrySetCredentialAsync` extension method for safely setting a credential.
 
 ### TipsTrade.ApiClient.Core.Error
@@ -21,8 +20,8 @@ A collection of interfaces, classes and extension methods that are commonly used
 - `GetErrorMessage` for retrieving a human-readable message from a `HttpStatusCode`.
 
 ### TipsTrade.ApiClient.Core.Tenant
-- `IGetTenant`, provides a method for retriving a tenant.
-- `GetTenantOrDefault` extension methods for retrieving a tenant.
+- `GetTenantAsync`, provides a method for retriving a tenant.
+- `GetTenantOrDefaultAsync` extension methods for retrieving a tenant.
 
 ### TipsTrade.ApiClient.Core.Threading
 - `KeyedSemaphoreSlim<K>`, provides a thread-safe keyed `SempahoreSlim`, backed by a `ConcurrentDictionary<K, SemaphoreSlim>`.
