@@ -31,6 +31,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TipsTrade.ApiClient.Core\TipsTrade.ApiClient.Core.csproj" />
+    <ProjectReference Include="..\TipsTrade.ApiClient.Testing\TipsTrade.ApiClient.Testing.csproj" />
   </ItemGroup>
 
   <ItemGroup>

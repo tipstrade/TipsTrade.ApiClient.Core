@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36301.6 d17.14
+VisualStudioVersion = 17.14.36301.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TipsTrade.ApiClient.Core", "TipsTrade.ApiClient.Core\TipsTrade.ApiClient.Core.csproj", "{2BB7F0C8-3897-40A9-A220-774EDA6073B8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{9A54198B-F05F-4613-A9D6-7DE2F3F05A3E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TipsTrade.ApiClient.Testing", "TipsTrade.ApiClient.Testing\TipsTrade.ApiClient.Testing.csproj", "{EC6908A2-EB20-4F4E-B4FC-3F0FF5B66538}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{9A54198B-F05F-4613-A9D6-7DE2F3F05A3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9A54198B-F05F-4613-A9D6-7DE2F3F05A3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9A54198B-F05F-4613-A9D6-7DE2F3F05A3E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC6908A2-EB20-4F4E-B4FC-3F0FF5B66538}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC6908A2-EB20-4F4E-B4FC-3F0FF5B66538}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC6908A2-EB20-4F4E-B4FC-3F0FF5B66538}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC6908A2-EB20-4F4E-B4FC-3F0FF5B66538}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
