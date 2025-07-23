@@ -10,7 +10,7 @@ namespace TipsTrade.ApiClient.Testing {
     /// <param name="assembly">The assembly from where to fetch the types.</param>
     /// <param name="typePredicate">An optional predicate for filtering the types.</param>
     /// <param name="propertyPredicate">An optional predicate for filtering the properties.</param>
-    public static IEnumerable<TestCaseData<PropertyInfo>> GetTestCases<T>(this Assembly assembly, Func<Type, bool>? typePredicate = null, Func<PropertyInfo, bool>? propertyPredicate = null) {
+    public static IEnumerable<TestCaseData<PropertyInfo>> GetTestCases(this Assembly assembly, Func<Type, bool>? typePredicate = null, Func<PropertyInfo, bool>? propertyPredicate = null) {
       var types = assembly.GetTypes().AsEnumerable();
 
       if (typePredicate != null) {

@@ -3,6 +3,15 @@ using TipsTrade.ApiClient.Testing;
 
 namespace Tests.JsonAttributes {
   public class Tests {
+    [Test(Description = "GetTestCases for assembly returns expected cases")]
+    public void GetTestCases_For_Assembly_Returns_Expected() {
+      var cases = Assembly.GetExecutingAssembly().GetTestCases(
+        t => t.FullName?.StartsWith("Tests.JsonAttributes") == true
+        );
+
+      Assert.That(cases.Count(), Is.EqualTo(9));
+    }
+
     [Test(Description = "GetTestCases should not include NotTested")]
     public void GetTestCases_Should_Not_Include() {
       var properties = JsonAttributeAssert
