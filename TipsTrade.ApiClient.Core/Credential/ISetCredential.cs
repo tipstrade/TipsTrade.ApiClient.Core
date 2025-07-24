@@ -4,7 +4,7 @@
   /// <typeparam name="TCredential">The type of credential.</typeparam>
   public interface ISetCredential<TKey, TCredential> {
     /// <summary>Sets the specified credential.</summary>
-    /// <param name="key">The key used to retrieve the credential.</param>
+    /// <param name="key">The key used to identify the credential.</param>
     /// <param name="credential">The credential instance.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns><c>true</c> if successful.</returns>

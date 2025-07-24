@@ -18,7 +18,7 @@ namespace TipsTrade.ApiClient.Core.Credential {
 
         return true;
       } catch (Exception ex) {
-        value.GetLogger()?.LogError("Failed to set credential: {message}", ex.Message);
+        value.GetLogger()?.LogError("Failed to set credential for Key={key}: {message}", key, ex.Message);
 
         return false;
       }
