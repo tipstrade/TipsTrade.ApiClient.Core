@@ -2,10 +2,10 @@
 using TipsTrade.ApiClient.Core.Error;
 
 namespace Tests.Errors {
-  public class Tests {
+  public class ApiException {
     [Test(Description = "ApiException.FromHttpError generates a custom error message.")]
     public void ApiException_From_StatusCode() {
-      var ex = ApiException.FromHttpError(HttpStatusCode.NotFound);
+      var ex = TipsTrade.ApiClient.Core.Error.ApiException.FromHttpError(HttpStatusCode.NotFound);
 
       using (Assert.EnterMultipleScope()) {
         Assert.That(ex.Error, Is.Null);
@@ -18,7 +18,7 @@ namespace Tests.Errors {
     [Test(Description = "ApiException.FromHttpError uses the error.")]
     public void ApiException_From_StatusCode_With_Error() {
       var expected = (RequestId: Guid.NewGuid(), Endpoint: "users");
-      var ex = ApiException.FromHttpError(HttpStatusCode.NotFound, error: expected);
+      var ex = TipsTrade.ApiClient.Core.Error.ApiException.FromHttpError(HttpStatusCode.NotFound, error: expected);
 
       Assert.Multiple(() => {
         Assert.That(ex.Error, Is.EqualTo(expected));
@@ -33,7 +33,7 @@ namespace Tests.Errors {
     [Test(Description = "ApiException.FromHttpError uses the provided message.")]
     public void ApiException_From_StatusCode_With_Message() {
       var expected = "A custom message.";
-      var ex = ApiException.FromHttpError(HttpStatusCode.NotFound, expected);
+      var ex = TipsTrade.ApiClient.Core.Error.ApiException.FromHttpError(HttpStatusCode.NotFound, expected);
 
       Assert.That(ex.Message, Is.EqualTo(expected));
     }
@@ -44,7 +44,7 @@ namespace Tests.Errors {
       var expectedStatus = HttpStatusCode.NotFound;
       var expectedError = (RequestId: Guid.NewGuid(), Endpoint: "users");
       var expectedException = new InvalidOperationException();
-      var ex = ApiException.FromHttpError(expectedStatus, message: expectedMessage, error: expectedError, innerException: expectedException);
+      var ex = TipsTrade.ApiClient.Core.Error.ApiException.FromHttpError(expectedStatus, message: expectedMessage, error: expectedError, innerException: expectedException);
 
       Assert.Multiple(() => {
         Assert.That(ex.Error, Is.EqualTo(expectedError));
@@ -58,7 +58,7 @@ namespace Tests.Errors {
     [Test(Description = "ApiException.FromHttpError uses the provided provider.")]
     public void ApiException_From_StatusCode_With_Provider() {
       var expected = "DVLA MOT";
-      var ex = ApiException.FromHttpError(HttpStatusCode.NotFound, provider: expected);
+      var ex = TipsTrade.ApiClient.Core.Error.ApiException.FromHttpError(HttpStatusCode.NotFound, provider: expected);
 
       Assert.That(ex.Provider, Is.EqualTo(expected));
     }
