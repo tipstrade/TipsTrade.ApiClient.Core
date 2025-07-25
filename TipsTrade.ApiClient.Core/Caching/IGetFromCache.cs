@@ -6,6 +6,6 @@
     /// <summary>Adds the item to the cache.</summary>
     /// <param name="key">The key used to identify the item.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
-    Task<TValue> GetFromCacheAsync(TKey key, CancellationToken cancellationToken = default);
+    Task<TValue?> GetFromCacheAsync(TKey key, CancellationToken cancellationToken = default);
   }
 }
