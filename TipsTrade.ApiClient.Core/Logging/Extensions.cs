@@ -4,7 +4,7 @@ namespace TipsTrade.ApiClient.Core.Logging {
   /// <summary>Provides extension methods for the <see cref="Logging"/> namespace.</summary>
   public static class Extensions {
     /// <summary>Gets the optional <see cref="ILogger"/> for the current values.</summary>
-    public static ILogger? GetLogger<T>(this T? value) => value is IWithLoger logger ? logger.Logger : null;
+    public static ILogger? GetLogger<T>(this T? value) => value is IWithLogger logger ? logger.Logger : null;
 
     /// <summary>Writes a log entry, if the specified logLevel is met.</summary>
     /// <param name="logger">The current logger.</param>

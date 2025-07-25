@@ -36,6 +36,8 @@ namespace TipsTrade.ApiClient.Core.Caching {
         var value = await cache.GetFromCacheAsync(key, cancellationToken);
 
         if (value is TValue) {
+          cache.GetLogger()?.LogTrace("Hit from cache for Key={key}", key);
+
           return value;
         }
 
