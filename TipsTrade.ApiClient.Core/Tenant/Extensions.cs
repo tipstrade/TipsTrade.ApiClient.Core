@@ -1,4 +1,8 @@
-﻿namespace TipsTrade.ApiClient.Core.Tenant {
+﻿using Microsoft.Extensions.Logging;
+using TipsTrade.ApiClient.Core.Error;
+using TipsTrade.ApiClient.Core.Logging;
+
+namespace TipsTrade.ApiClient.Core.Tenant {
   /// <summary>A collection of methods for the <see cref="Tenant"/> namespace.</summary>
   public static class Extensions {
     /// <summary>Retrieves the tenant, or the default value.</summary>
@@ -17,6 +21,40 @@
     /// <returns>The tenant string, or <c>(default)</c></returns>
     public static Task<string> GetTenantOrDefaultAsync(this IGetTenant? tenant, CancellationToken cancellationToken = default) {
       return tenant.GetTenantOrDefaultAsync("(default)", cancellationToken);
+    }
+
+    /// <summary>
+    /// Retrieves the tenant or throws an exception if retrieval fails.
+    /// </summary>
+    /// <typeparam name="T">The type of tenant.</typeparam>
+    /// <param name="tenant">The tenant provider instance.</param>
+    /// <param name="defaultValue">The default tenant value to use if the provider is null.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>A task representing the asynchronous operation, containing the tenant.</returns>
+    /// <exception cref="InvalidOperationException">Thrown when tenant retrieval fails.</exception>
+    public static async Task<T> GetTenantOrThrowAsync<T>(this IGetTenant<T>? tenant, T defaultValue, CancellationToken cancellationToken = default) {
+      try {
+        return await tenant.GetTenantOrDefaultAsync(defaultValue, cancellationToken);
+      } catch (Exception ex) {
+        tenant.GetLogger()?.LogError("Failed to retrieve tenant: {message}", ex.Message);
+        throw ExceptionFactory.GetTenantFailed(ex);
+      }
+    }
+
+    /// <summary>
+    /// Retrieves the tenant as a string or throws an exception if retrieval fails.
+    /// </summary>
+    /// <param name="tenant">The tenant provider instance.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>A task representing the asynchronous operation, containing the tenant as a string.</returns>
+    /// <exception cref="InvalidOperationException">Thrown when tenant retrieval fails.</exception>
+    public static async Task<string> GetTenantOrThrowAsync(this IGetTenant? tenant, CancellationToken cancellationToken = default) {
+      try {
+        return await tenant.GetTenantOrDefaultAsync(cancellationToken);
+      } catch (Exception ex) {
+        tenant.GetLogger()?.LogError("Failed to retrieve tenant: {message}", ex.Message);
+        throw ExceptionFactory.GetTenantFailed(ex);
+      }
     }
   }
 }

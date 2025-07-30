@@ -1,4 +1,5 @@
 ﻿using Moq;
+using System.Threading.Tasks;
 using TipsTrade.ApiClient.Core.Credential;
 
 namespace Tests.Credential {
@@ -29,6 +30,52 @@ namespace Tests.Credential {
       mock.Invocations.Clear();
       Assert.ThatAsync(async () => await mock.Object.TrySetCredentialAsync("", fail), Is.False);
       mock.Verify(x => x.SetCredentialAsync(It.IsAny<string>(), fail, It.IsAny<CancellationToken>()), Times.Once);
+    }
+
+    [Test(Description = "GetTenantOrThrowAsync succeeds")]
+    public async Task GetTenantOrThrowAsync_Succeeds() {
+      var expected = new ApiKeyCredential();
+      var mock = new Mock<IGetCredential<string, ApiKeyCredential>>();
+
+      mock.Setup(x => x.GetCredentialAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).ReturnsAsync(expected);
+
+      var actual = await mock.Object.GetCredentialOrThrowAsync("");
+
+      Assert.That(actual, Is.EqualTo(expected));
+      mock.Verify(x => x.GetCredentialAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Once);
+    }
+
+    [Test(Description = "GetTenantOrThrowAsync<T> succeeds")]
+    public async Task GetTenantOrThrowAsync_T_Succeeds() {
+      var expected = new ApiKeyCredential();
+      var mock = new Mock<IGetCredential<string>>();
+
+      mock.Setup(x => x.GetCredentialAsync<ApiKeyCredential>(It.IsAny<string>(), It.IsAny<CancellationToken>())).ReturnsAsync(expected);
+
+      var actual = await mock.Object.GetCredentialOrThrowAsync<string, ApiKeyCredential>("");
+
+      Assert.That(actual, Is.EqualTo(expected));
+      mock.Verify(x => x.GetCredentialAsync<ApiKeyCredential>(It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Once);
+    }
+
+    [Test(Description = "GetTenantOrThrowAsync throws")]
+    public void GetTenantOrThrowAsync_Throws() {
+      var mock = new Mock<IGetCredential<string, ApiKeyCredential>>();
+
+      mock.Setup(x => x.GetCredentialAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).Throws<ArgumentException>();
+
+      Assert.ThrowsAsync<InvalidOperationException>(() => mock.Object.GetCredentialOrThrowAsync("(default)"));
+      mock.Verify(x => x.GetCredentialAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Once);
+    }
+
+    [Test(Description = "GetTenantOrThrowAsync<T> throws")]
+    public void GetTenantOrThrowAsync_T_Throws() {
+      var mock = new Mock<IGetCredential<string>>();
+
+      mock.Setup(x => x.GetCredentialAsync<ApiKeyCredential>(It.IsAny<string>(), It.IsAny<CancellationToken>())).Throws<ArgumentException>();
+
+      Assert.ThrowsAsync<InvalidOperationException>(() => mock.Object.GetCredentialOrThrowAsync<string, ApiKeyCredential>("(default)"));
+      mock.Verify(x => x.GetCredentialAsync<ApiKeyCredential>(It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Once);
     }
 
     #region Test cases
