@@ -19,8 +19,8 @@ namespace TipsTrade.ApiClient.Core.Tenant {
     /// <param name="tenant">The current value.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The tenant string, or <c>(default)</c></returns>
-    public static Task<string> GetTenantOrDefaultAsync(this IGetTenant? tenant, CancellationToken cancellationToken = default) {
-      return tenant.GetTenantOrDefaultAsync("(default)", cancellationToken);
+    public static async Task<string> GetTenantOrDefaultAsync(this IGetTenant? tenant, CancellationToken cancellationToken = default) {
+      return tenant != null ? await tenant.GetTenantAsync(cancellationToken) : "(default)";
     }
 
     /// <summary>

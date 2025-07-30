@@ -1,4 +1,5 @@
 using Moq;
+using System.Xml.Serialization;
 using TipsTrade.ApiClient.Core.Tenant;
 
 namespace Tests.Tenant {
@@ -35,16 +36,23 @@ namespace Tests.Tenant {
     public async Task GetStringTenantOrDefault_Succeeds_For_Null() {
       var expected = "(default)";
       string actual;
-      IGetTenant? mock = null;
-
-      // With no default
-      actual = await mock.GetTenantOrDefaultAsync();
-
-      Assert.That(actual, Is.EqualTo(expected));
+      IGetTenant<string>? mock = null;
 
       // With a default value
       expected = "None";
       actual = await mock.GetTenantOrDefaultAsync("None");
+
+      Assert.That(actual, Is.EqualTo(expected));
+    }
+
+    [Test(Description = "GetTenantOrDefault succeeds with a null reference")]
+    public async Task GetTenantOrDefault_Succeeds_For_Null() {
+      var expected = "(default)";
+      string actual;
+      IGetTenant? mock = null;
+
+      // With no default
+      actual = await mock.GetTenantOrDefaultAsync();
 
       Assert.That(actual, Is.EqualTo(expected));
     }
