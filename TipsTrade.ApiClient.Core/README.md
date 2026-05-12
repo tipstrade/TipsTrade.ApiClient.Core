@@ -1,36 +1,58 @@
 # TipsTrade.ApiClient.Core
 
-A collection of interfaces, classes and extension methods that are commonly used when writing API client libraries.
+A collection of interfaces, classes and extension methods commonly used when writing API client libraries.
 
-**Supported versions**
-- .Net 8
-- .Net Framework 4.8.1
+Supported target frameworks
+- `net8.0`
+- `net481`
 
-## Namespaces
+Packaging
+- Project generates a NuGet package on build (`GeneratePackageOnBuild=true`) and uses `README.md` as the package readme.
+- Project depends on `Microsoft.Extensions.Logging.Abstractions` (core package).
 
-### TipsTrade.ApiClient.Core.Caching
-- `IAddToCache<TKey, TValue>`, provides a method for adding items to a cache.
-- `IGetFromCache<TKey, TValue>`, provides a method for getting items from the cache.
-- `IReadWriteCache<TKey, TValue>`, provides methods for getting and setting items in the cache.
+Namespaces and important types
 
-### TipsTrade.ApiClient.Core.Credential
-- `IIsValid`, provides a property for indicating whether a instance is valid.
-- `UserCredential`, `ApiKeyCredential`, provides properties for commonly used credential types.
-- `IGetCredential<TKey>`, `IGetCredential<TKey, TCredential>`, provides methods for retrieving a credential using a key.
-- `ISetCredential<TKey, TCredential>`, provides methods setting a credential using a key.
-- `TrySetCredentialAsync` extension method for safely setting a credential.
+TipsTrade.ApiClient.Core.Caching
+- `IAddToCache<TKey>` / `IAddToCache<TKey, TValue>` — methods to add items to a cache (`AddToCacheAsync`).
+- `IGetFromCache<TKey>` / `IGetFromCache<TKey, TValue>` — methods to retrieve items from a cache (`GetFromCacheAsync`).
+- `IReadWriteCache<TKey>` / `IReadWriteCache<TKey, TValue>` — convenience interfaces combining add/get.
 
-### TipsTrade.ApiClient.Core.Error
-- `ApiException`, provides properties for HTTP status codes, data and providers.
-- `GetErrorMessage` for retrieving a human-readable message from a `HttpStatusCode`.
+TipsTrade.ApiClient.Core.Credential
+- `IIsValid` — exposes `bool IsValid { get; }` for credential validation.
+- `UserCredential` — simple user credentials (`Username`, `Password`) with `IsValid` behavior.
+- `ApiKeyCredential` — simple API key credentials (`ApiKey`, optional `Secret`) with `IsValid` behavior.
+- `IGetCredential<TKey>` and `IGetCredential<TKey, TCredential>` — retrieval methods: `GetCredentialAsync<TCredential>(TKey key, ...)` and `GetCredentialAsync(TKey key, ...)`.
+- `ISetCredential<TKey, TCredential>` — `SetCredentialAsync(TKey key, TCredential credential, ...)`.
+- Extension methods:
+  - `GetCredentialOrThrowAsync` — wraps `GetCredentialAsync` and throws a standardized exception (logs failure).
+  - `TrySetCredentialAsync` — calls `SetCredentialAsync` and returns `true` on success, `false` on failure (logs failure).
 
-### TipsTrade.ApiClient.Core.Logging
-- `IWithLogger`,provides a property that returns an `ILogger`.
-- Extension methods for `IWithLogger` and `ILogger`.
+TipsTrade.ApiClient.Core.Error
+- `ApiException` — exception type representing API errors. Properties: `object? Error`, `string? Provider`, `HttpStatusCode? StatusCode`. Factory: `ApiException.FromHttpError(...)`.
+- `HttpStatusCode.GetErrorMessage()` — extension that returns a human-readable fallback message for common HTTP status codes.
 
-### TipsTrade.ApiClient.Core.Tenant
-- `GetTenantAsync`, provides a method for retriving a tenant.
-- `GetTenantOrDefaultAsync` extension methods for retrieving a tenant.
+TipsTrade.ApiClient.Core.Logging
+- `IWithLogger` — exposes `ILogger? Logger { get; }`.
+- Extensions:
+  - `GetLogger<T>(this T? value)` — returns `ILogger?` if the value implements `IWithLogger`.
+  - `LogIf(this ILogger? logger, LogLevel level, Func<string> message)` — logs only when the `LogLevel` is enabled.
 
-### TipsTrade.ApiClient.Core.Threading
-- `KeyedSemaphoreSlim<K>`, provides a thread-safe keyed `SempahoreSlim`, backed by a `ConcurrentDictionary<K, SemaphoreSlim>`.
+TipsTrade.ApiClient.Core.Tenant
+- `IGetTenant` / `IGetTenant<T>` — `GetTenantAsync(...)` to obtain tenant values.
+- Extension methods:
+  - `GetTenantOrDefaultAsync(this IGetTenant? tenant)` — returns tenant string or `"(default)"`.
+  - `GetTenantOrDefaultAsync<T>(this IGetTenant<T>? tenant, T defaultValue)` — returns tenant or provided default.
+  - `GetTenantOrThrowAsync` variants — wrap retrieval, log on error and throw standardized exception.
+
+TipsTrade.ApiClient.Core.Threading
+- `KeyedSemaphoreSlim<K>` — a thread-safe keyed `SemaphoreSlim` store backed by `ConcurrentDictionary<K, SemaphoreSlim>`. Features:
+  - `WaitAsync(K key, ...)` to wait on a specific key.
+  - `Release(K key)` / `TryRelease(K key)` to release.
+  - `ContainsKey`, `GetCurrentCount`, and configurable default counts.
+
+Tests
+- The repository includes unit tests that exercise credential helpers, error helpers, JSON attribute assertions, threading utilities, and other behaviors.
+
+Notes
+- The README has been synchronized with the codebase: method names, available extension methods, and interfaces reflect the actual source files.
+- For implementation details, public APIs and XML documentation are available in the source under the respective folders (e.g. `Credential`, `Error`, `Logging`, `Tenant`, `Caching`, `Threading`).
