@@ -6,13 +6,9 @@
 		<LangVersion>latest</LangVersion>
 		<Nullable>enable</Nullable>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
-		<Authors>John Bayly</Authors>
-		<Company>TipsTrade Ltd.</Company>
-		<Copyright>Copyright TipsTrade Ltd.2025</Copyright>
 		<PackageProjectUrl>https://github.com/tipstrade/TipsTrade.ApiClient.Core</PackageProjectUrl>
 		<RepositoryType>git</RepositoryType>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-		<Version>1.1.0.7</Version>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<Description>A collection of interfaces, classes and extension methods that are commonly used when writing API client libraries.</Description>
 		<Title>API Client abstractions and helpers.</Title>
