@@ -8,7 +8,9 @@ namespace Tests.Threading {
 
       await semaphore.WaitAsync(new());
 
-      Assert.Throws<InvalidOperationException>(() => semaphore.GetCurrentCount(new()));
+      var action = () => semaphore.GetCurrentCount(new());
+
+      Assert.That(action, Throws.InvalidOperationException);
     }
 
     [TestCaseSource(nameof(SemaphoreKeys))]
@@ -20,17 +22,19 @@ namespace Tests.Threading {
 
         Assert.That(semaphore.GetCurrentCount(key), Is.Zero, $"CurrentCount invalid for {typeof(T)}");
       } finally {
-        Assert.DoesNotThrow(() => semaphore.Release(key));
+        var releaseAction = () => semaphore.Release(key);
+        Assert.That(releaseAction, Throws.Nothing);
       }
     }
 
     [Test(Description = "WaitAsync throw for invalid count sizes.")]
     public void WaitAsync_Throws_For_Invalid_Counts() {
       var semaphore = new KeyedSemaphoreSlim<string>(1);
-
-      Assert.ThrowsAsync<ArgumentOutOfRangeException>(async () => {
+      var action = async () => {
         await semaphore.WaitAsync("", 2, 1);
-      });
+      };
+
+      Assert.ThatAsync(action, Throws.TypeOf<ArgumentOutOfRangeException>());
     }
 
     [Test(Description = "WaitAsync throw for invalid key.")]
@@ -39,7 +43,9 @@ namespace Tests.Threading {
 
       await semaphore.WaitAsync(new());
 
-      Assert.Throws<InvalidOperationException>(() => semaphore.Release(new()));
+      var action = () => semaphore.Release(new());
+
+      Assert.That(action, Throws.InvalidOperationException);
     }
 
     #region Test cases

@@ -35,28 +35,50 @@ namespace Tests.JsonAttributes {
 
     [Test(Description = "IsIgnoreConsistent asserts correctly")]
     public void IsIgnoreConsistent_Asserts_Correctly() {
-      Assert.Throws<AssertionException>(() => JsonAttributeAssert.IsIgnoreConsistent(GetProperty<InvalidModel>(nameof(InvalidModel.MissingIgnore1))));
-      Assert.Throws<AssertionException>(() => JsonAttributeAssert.IsIgnoreConsistent(GetProperty<InvalidModel>(nameof(InvalidModel.MissingIgnore2))));
+      var missingIgnore1 = () => JsonAttributeAssert.IsIgnoreConsistent(GetProperty<InvalidModel>(nameof(InvalidModel.MissingIgnore1)));
+      var missingIgnore2 = () => JsonAttributeAssert.IsIgnoreConsistent(GetProperty<InvalidModel>(nameof(InvalidModel.MissingIgnore2)));
+      var notTested = () => JsonAttributeAssert.IsIgnoreConsistent(GetProperty<InvalidModel>(nameof(InvalidModel.NotTested)));
+      var consistentIgnore = () => JsonAttributeAssert.IsIgnoreConsistent(GetProperty<InvalidModel>(nameof(InvalidModel.ConsistentIgnore)));
+      var consistentName = () => JsonAttributeAssert.IsIgnoreConsistent(GetProperty<InvalidModel>(nameof(InvalidModel.ConsistentName)));
+      var inconsistentName = () => JsonAttributeAssert.IsIgnoreConsistent(GetProperty<InvalidModel>(nameof(InvalidModel.InconsistentName)));
+      var missingName1 = () => JsonAttributeAssert.IsIgnoreConsistent(GetProperty<InvalidModel>(nameof(InvalidModel.MissingName1)));
+      var missingName2 = () => JsonAttributeAssert.IsIgnoreConsistent(GetProperty<InvalidModel>(nameof(InvalidModel.MissingName2)));
 
-      Assert.DoesNotThrow(() => JsonAttributeAssert.IsIgnoreConsistent(GetProperty<InvalidModel>(nameof(InvalidModel.NotTested))));
-      Assert.DoesNotThrow(() => JsonAttributeAssert.IsIgnoreConsistent(GetProperty<InvalidModel>(nameof(InvalidModel.ConsistentIgnore))));
-      Assert.DoesNotThrow(() => JsonAttributeAssert.IsIgnoreConsistent(GetProperty<InvalidModel>(nameof(InvalidModel.ConsistentName))));
-      Assert.DoesNotThrow(() => JsonAttributeAssert.IsIgnoreConsistent(GetProperty<InvalidModel>(nameof(InvalidModel.InconsistentName))));
-      Assert.DoesNotThrow(() => JsonAttributeAssert.IsIgnoreConsistent(GetProperty<InvalidModel>(nameof(InvalidModel.MissingName1))));
-      Assert.DoesNotThrow(() => JsonAttributeAssert.IsIgnoreConsistent(GetProperty<InvalidModel>(nameof(InvalidModel.MissingName2))));
+      using (Assert.EnterMultipleScope()) {
+        Assert.That(missingIgnore1, Throws.InstanceOf<AssertionException>());
+        Assert.That(missingIgnore2, Throws.InstanceOf<AssertionException>());
+
+        Assert.That(notTested, Throws.Nothing);
+        Assert.That(consistentIgnore, Throws.Nothing);
+        Assert.That(consistentName, Throws.Nothing);
+        Assert.That(inconsistentName, Throws.Nothing);
+        Assert.That(missingName1, Throws.Nothing);
+        Assert.That(missingName2, Throws.Nothing);
+      }
     }
 
     [Test(Description = "IsNameConsistent asserts correctly")]
     public void IsPropertyNameConsistent_Asserts_Correctly() {
-      Assert.Throws<AssertionException>(() => JsonAttributeAssert.IsNameConsistent(GetProperty<InvalidModel>(nameof(InvalidModel.InconsistentName))));
-      Assert.Throws<AssertionException>(() => JsonAttributeAssert.IsNameConsistent(GetProperty<InvalidModel>(nameof(InvalidModel.MissingName1))));
-      Assert.Throws<AssertionException>(() => JsonAttributeAssert.IsNameConsistent(GetProperty<InvalidModel>(nameof(InvalidModel.MissingName2))));
+      var inconsistentName = () => JsonAttributeAssert.IsNameConsistent(GetProperty<InvalidModel>(nameof(InvalidModel.InconsistentName)));
+      var missingName1 = () => JsonAttributeAssert.IsNameConsistent(GetProperty<InvalidModel>(nameof(InvalidModel.MissingName1)));
+      var missingName2 = () => JsonAttributeAssert.IsNameConsistent(GetProperty<InvalidModel>(nameof(InvalidModel.MissingName2)));
+      var notTested = () => JsonAttributeAssert.IsNameConsistent(GetProperty<InvalidModel>(nameof(InvalidModel.NotTested)));
+      var consistentIgnore = () => JsonAttributeAssert.IsNameConsistent(GetProperty<InvalidModel>(nameof(InvalidModel.ConsistentIgnore)));
+      var consistentName = () => JsonAttributeAssert.IsNameConsistent(GetProperty<InvalidModel>(nameof(InvalidModel.ConsistentName)));
+      var missingIgnore1 = () => JsonAttributeAssert.IsNameConsistent(GetProperty<InvalidModel>(nameof(InvalidModel.MissingIgnore1)));
+      var missingIgnore2 = () => JsonAttributeAssert.IsNameConsistent(GetProperty<InvalidModel>(nameof(InvalidModel.MissingIgnore2)));
 
-      Assert.DoesNotThrow(() => JsonAttributeAssert.IsNameConsistent(GetProperty<InvalidModel>(nameof(InvalidModel.NotTested))));
-      Assert.DoesNotThrow(() => JsonAttributeAssert.IsNameConsistent(GetProperty<InvalidModel>(nameof(InvalidModel.ConsistentIgnore))));
-      Assert.DoesNotThrow(() => JsonAttributeAssert.IsNameConsistent(GetProperty<InvalidModel>(nameof(InvalidModel.ConsistentName))));
-      Assert.DoesNotThrow(() => JsonAttributeAssert.IsNameConsistent(GetProperty<InvalidModel>(nameof(InvalidModel.MissingIgnore1))));
-      Assert.DoesNotThrow(() => JsonAttributeAssert.IsNameConsistent(GetProperty<InvalidModel>(nameof(InvalidModel.MissingIgnore2))));
+      using (Assert.EnterMultipleScope()) {
+        Assert.That(inconsistentName, Throws.InstanceOf<AssertionException>());
+        Assert.That(missingName1, Throws.InstanceOf<AssertionException>());
+        Assert.That(missingName2, Throws.InstanceOf<AssertionException>());
+
+        Assert.That(notTested, Throws.Nothing);
+        Assert.That(consistentIgnore, Throws.Nothing);
+        Assert.That(consistentName, Throws.Nothing);
+        Assert.That(missingIgnore1, Throws.Nothing);
+        Assert.That(missingIgnore2, Throws.Nothing);
+      }
     }
 
     [Test, TestCaseSource(nameof(GetTestData))]

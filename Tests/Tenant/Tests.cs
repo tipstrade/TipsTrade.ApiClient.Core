@@ -72,7 +72,7 @@ namespace Tests.Tenant {
     public void GetTenantOrDefaultAsync_Throws() {
       var mock = GetFailureMock<string, InvalidOperationException>();
 
-      Assert.ThrowsAsync<InvalidOperationException>(() => mock.Object.GetTenantOrDefaultAsync("(default)"));
+      Assert.ThatAsync(() => mock.Object.GetTenantOrDefaultAsync("(default)"), Throws.InvalidOperationException);
       mock.Verify(x => x.GetTenantAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
 
@@ -88,7 +88,7 @@ namespace Tests.Tenant {
     public void GetTenantOrThrowAsync_Throws() {
       var mock = GetFailureMock<string, ArgumentException>();
 
-      Assert.ThrowsAsync<InvalidOperationException>(() => mock.Object.GetTenantOrThrowAsync("(default)"));
+      Assert.ThatAsync(() => mock.Object.GetTenantOrThrowAsync("(default)"), Throws.InvalidOperationException);
       mock.Verify(x => x.GetTenantAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
   }

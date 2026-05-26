@@ -64,7 +64,7 @@ namespace Tests.Credential {
 
       mock.Setup(x => x.GetCredentialAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).Throws<ArgumentException>();
 
-      Assert.ThrowsAsync<InvalidOperationException>(() => mock.Object.GetCredentialOrThrowAsync("(default)"));
+      Assert.ThatAsync(() => mock.Object.GetCredentialOrThrowAsync("(default)"), Throws.InvalidOperationException);
       mock.Verify(x => x.GetCredentialAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Once);
     }
 
@@ -74,7 +74,7 @@ namespace Tests.Credential {
 
       mock.Setup(x => x.GetCredentialAsync<ApiKeyCredential>(It.IsAny<string>(), It.IsAny<CancellationToken>())).Throws<ArgumentException>();
 
-      Assert.ThrowsAsync<InvalidOperationException>(() => mock.Object.GetCredentialOrThrowAsync<string, ApiKeyCredential>("(default)"));
+      Assert.ThatAsync(() => mock.Object.GetCredentialOrThrowAsync<string, ApiKeyCredential>("(default)"), Throws.InvalidOperationException);
       mock.Verify(x => x.GetCredentialAsync<ApiKeyCredential>(It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Once);
     }
 

@@ -20,14 +20,14 @@ namespace Tests.Errors {
       var expected = (RequestId: Guid.NewGuid(), Endpoint: "users");
       var ex = TipsTrade.ApiClient.Core.Error.ApiException.FromHttpError(HttpStatusCode.NotFound, error: expected);
 
-      Assert.Multiple(() => {
+      using (Assert.EnterMultipleScope()) {
         Assert.That(ex.Error, Is.EqualTo(expected));
-        Assert.That(ex.GetError<(Guid RequestId, string Endpoint)>, Is.EqualTo(expected));
+        Assert.That(ex.GetError<(Guid RequestId, string Endpoint)>(), Is.EqualTo(expected));
 
         // Default values
         Assert.That(ex.GetError<string>(), Is.Null);
         Assert.That(ex.GetError<int>(), Is.Zero);
-      });
+      }
     }
 
     [Test(Description = "ApiException.FromHttpError uses the provided message.")]
@@ -46,13 +46,13 @@ namespace Tests.Errors {
       var expectedException = new InvalidOperationException();
       var ex = TipsTrade.ApiClient.Core.Error.ApiException.FromHttpError(expectedStatus, message: expectedMessage, error: expectedError, innerException: expectedException);
 
-      Assert.Multiple(() => {
+      using (Assert.EnterMultipleScope()) {
         Assert.That(ex.Error, Is.EqualTo(expectedError));
         Assert.That(ex.Message, Is.EqualTo(expectedMessage));
         Assert.That(ex.InnerException, Is.EqualTo(expectedException));
         Assert.That(ex.StatusCode, Is.EqualTo(expectedStatus));
-        Assert.That(ex.GetError<(Guid, string)>, Is.EqualTo(expectedError));
-      });
+        Assert.That(ex.GetError<(Guid, string)>(), Is.EqualTo(expectedError));
+      }
     }
 
     [Test(Description = "ApiException.FromHttpError uses the provided provider.")]
@@ -67,13 +67,13 @@ namespace Tests.Errors {
     public void HttpStatusCode_GetErrorMessage() {
       var fallback = @"The server returned a \d+ response";
 
-      Assert.Multiple(() => {
+      using (Assert.EnterMultipleScope()) {
         // 404 has a custom message
         Assert.That(HttpStatusCode.NotFound.GetErrorMessage(), Does.Not.Match(fallback));
 
         // Fallback 
         Assert.That(((HttpStatusCode)0).GetErrorMessage(), Does.Match(fallback));
-      });
+      }
     }
   }
 }
