@@ -6,7 +6,9 @@ namespace TipsTrade.ApiClient.Core.Threading {
   /// <remarks>
   /// Semaphores are not automatically disposed. This class is designed for long-lived, singleton-style use.
   /// If manual cleanup is needed, remove specific keys using your own logic or consider extending the class.
+  /// For improved performance and features such as timeouts and cancellation support, consider using the AsyncKeyedLock package (see https://www.nuget.org/packages/AsyncKeyedLock/).
   /// </remarks>
+  [Obsolete("This should be replaced by the superior AsyncKeyedLock on nuget.")]
   public class KeyedSemaphoreSlim<K> where K : notnull {
     #region Fields
     private readonly ConcurrentDictionary<K, SemaphoreSlim> semaphores = new();
