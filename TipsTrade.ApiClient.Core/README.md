@@ -1,14 +1,13 @@
-# TipsTrade.ApiClient.Core
+# TipsTrade.ApiClient.Core [![NuGet](https://img.shields.io/nuget/v/TipsTrade.ApiClient.Core)](https://www.nuget.org/packages/TipsTrade.ApiClient.Core)
 
 A collection of interfaces, classes and extension methods commonly used when writing API client libraries.
+
+Versioning
+- As of version 8.x the package major version follows the .NET target version (e.g. `8.x.x` targets `net8.0`).
 
 Supported target frameworks
 - `net8.0`
 - `net481` (for compatibility with older .NET Framework projects, but may not receive all new features going forward).
-
-Versioning
-- [![NuGet](https://img.shields.io/nuget/v/TipsTrade.ApiClient.Core)](https://www.nuget.org/packages/TipsTrade.ApiClient.Core)
-- As of version 8.x the package major version follows the .NET target version (e.g. `8.x.x` targets `net8.0`).
 
 Packaging
 - Project generates a NuGet package on build (`GeneratePackageOnBuild=true`) and uses `README.md` as the package readme.

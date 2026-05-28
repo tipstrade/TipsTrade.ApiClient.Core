@@ -1,13 +1,12 @@
-# TipsTrade.ApiClient.Testing
+# TipsTrade.ApiClient.Testing [![NuGet](https://img.shields.io/nuget/v/TipsTrade.ApiClient.Testing)](https://www.nuget.org/packages/TipsTrade.ApiClient.Testing)
 
 Utilities to help unit tests validate JSON attribute usage and other small testing concerns.
 
+Versioning
+- As of version 8.x the package major version follows the .NET target version (e.g. `8.x.x` targets `net8.0`).
+
 Supported target framework
 - `net8.0`
-
-Versioning
-- [![NuGet](https://img.shields.io/nuget/v/TipsTrade.ApiClient.Testing)](https://www.nuget.org/packages/TipsTrade.ApiClient.Testing)
-- As of version 8.x the package major version follows the .NET target version (e.g. `8.x.x` targets `net8.0`).
 
 Intended use
 - Project supplies lightweight test helpers (designed to be referenced from unit test projects) that integrate with NUnit's `TestCaseData` to produce parameterized tests.
